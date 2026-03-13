@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenGradient Ecosystem Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #04020d;
+  --bg2: #070514;
+  --p: #8b5cf6; --p2: #7c3aed; --pl: #a78bfa;
+  --c: #22d3ee; --c2: #06b6d4;
+  --g: #34d399; --g2: #10b981;
+  --y: #fbbf24; --o: #fb923c;
+  --r: #f87171; --pk: #f472b6;
+  --b1: rgba(255,255,255,0.04);
+  --b2: rgba(255,255,255,0.07);
+  --b3: rgba(255,255,255,0.11);
+  --t1: #94a3b8; --t2: #64748b; --t3: #475569;
+  --w: #f8fafc;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);font-family:'Cabinet Grotesk',sans-serif;color:var(--t1);min-height:100vh;overflow-x:hidden}
+
+/* BG */
+.bg-fx{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(110px);animation:orbF 14s ease-in-out infinite}
+.o1{width:800px;height:800px;background:rgba(139,92,246,0.055);top:-350px;left:-250px}
+.o2{width:650px;height:650px;background:rgba(34,211,238,0.04);bottom:-280px;right:-200px;animation-delay:6s}
+.o3{width:500px;height:500px;background:rgba(52,211,153,0.03);top:35%;left:30%;animation-delay:10s}
+@keyframes orbF{0%,100%{transform:translate(0,0)}40%{transform:translate(50px,-40px)}70%{transform:translate(-30px,45px)}}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,0.009) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.009) 1px,transparent 1px);background-size:56px 56px;pointer-events:none;z-index:0}
+
+/* LOADER */
+.loader{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:18px;transition:opacity .6s}
+.loader-hex{width:70px;height:70px;border-radius:20px;background:linear-gradient(135deg,var(--p2),var(--c2));display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:0 0 50px rgba(124,58,237,0.4);animation:hf 2s ease-in-out infinite}
+@keyframes hf{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-10px) rotate(5deg)}}
+.loader-t{font-size:11px;letter-spacing:5px;color:var(--t1)}
+.loader-bar{width:240px;height:2px;background:var(--b2);border-radius:2px;overflow:hidden}
+.loader-fill{height:100%;background:linear-gradient(90deg,var(--p2),var(--c2));animation:lf 2s ease forwards}
+@keyframes lf{to{width:100%}}
+
+/* WRAPPER */
+.wrap{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:0 24px 80px}
+
+/* HERO */
+.hero{text-align:center;padding:60px 20px 50px;animation:fadeUp .8s ease}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border-radius:24px;background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.25);font-size:11px;letter-spacing:3px;color:var(--pl);margin-bottom:24px}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--g);box-shadow:0 0 10px var(--g);animation:ldp 2s ease-in-out infinite}
+@keyframes ldp{0%,100%{box-shadow:0 0 4px var(--g)}50%{box-shadow:0 0 18px var(--g),0 0 35px rgba(52,211,153,0.2)}}
+.hero h1{font-size:clamp(36px,5.5vw,68px);font-weight:900;color:var(--w);line-height:1.05;letter-spacing:-2px;margin-bottom:16px}
+.hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--pl),var(--c));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:17px;color:var(--t1);max-width:560px;margin:0 auto 36px;line-height:1.75;font-weight:400}
+
+/* MEGA STATS */
+.mega-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:40px;animation:fadeUp .8s ease .1s both}
+.mstat{background:var(--b1);border:1px solid var(--b2);border-radius:16px;padding:18px 14px;text-align:center;position:relative;overflow:hidden;transition:all .2s}
+.mstat:hover{border-color:var(--b3);transform:translateY(-2px)}
+.mstat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0.6}
+.mstat:nth-child(1)::before{background:linear-gradient(90deg,transparent,var(--pl),transparent)}
+.mstat:nth-child(2)::before{background:linear-gradient(90deg,transparent,var(--c),transparent)}
+.mstat:nth-child(3)::before{background:linear-gradient(90deg,transparent,var(--g),transparent)}
+.mstat:nth-child(4)::before{background:linear-gradient(90deg,transparent,var(--y),transparent)}
+.mstat:nth-child(5)::before{background:linear-gradient(90deg,transparent,var(--pk),transparent)}
+.mstat-num{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;color:var(--w);line-height:1}
+.mstat-lbl{font-size:9px;color:var(--t2);letter-spacing:2px;margin-top:5px}
+
+/* FILTER BAR */
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;align-items:center;animation:fadeUp .8s ease .15s both}
+.filter-label{font-size:10px;letter-spacing:3px;color:var(--t2);margin-right:4px}
+.fbtn{padding:7px 16px;border-radius:20px;border:1px solid var(--b2);background:transparent;color:var(--t2);font-family:'Cabinet Grotesk',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s}
+.fbtn:hover{border-color:var(--b3);color:var(--w)}
+.fbtn.active{border-color:rgba(139,92,246,0.5);color:var(--pl);background:rgba(139,92,246,0.08)}
+.search-box{margin-left:auto;display:flex;align-items:center;gap:8px;background:var(--b1);border:1px solid var(--b2);border-radius:20px;padding:6px 14px;transition:border-color .2s}
+.search-box:focus-within{border-color:rgba(139,92,246,0.4)}
+.search-box input{background:transparent;border:none;outline:none;color:var(--w);font-family:'Cabinet Grotesk',sans-serif;font-size:12px;width:160px}
+.search-box input::placeholder{color:var(--t3)}
+
+/* SECTION TITLE */
+.sec-title{font-size:13px;font-weight:700;color:var(--w);letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--b2)}
+
+/* FEATURED PROJECTS */
+.featured-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:40px;animation:fadeUp .8s ease .2s both}
+
+.proj-card{border-radius:20px;padding:22px;position:relative;overflow:hidden;transition:all .3s;cursor:pointer}
+.proj-card:hover{transform:translateY(-5px)}
+.proj-card::before{content:'';position:absolute;inset:0;border-radius:20px;opacity:0;transition:opacity .3s;background:rgba(255,255,255,0.02)}
+.proj-card:hover::before{opacity:1}
+
+/* Card themes */
+.card-purple{background:linear-gradient(145deg,rgba(124,58,237,0.12),rgba(4,2,13,0.9));border:1px solid rgba(124,58,237,0.25)}
+.card-purple:hover{box-shadow:0 12px 50px rgba(124,58,237,0.15);border-color:rgba(124,58,237,0.4)}
+.card-cyan{background:linear-gradient(145deg,rgba(6,182,212,0.1),rgba(4,2,13,0.9));border:1px solid rgba(6,182,212,0.22)}
+.card-cyan:hover{box-shadow:0 12px 50px rgba(6,182,212,0.12);border-color:rgba(6,182,212,0.4)}
+.card-green{background:linear-gradient(145deg,rgba(16,185,129,0.1),rgba(4,2,13,0.9));border:1px solid rgba(16,185,129,0.22)}
+.card-green:hover{box-shadow:0 12px 50px rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.4)}
+.card-yellow{background:linear-gradient(145deg,rgba(251,191,36,0.08),rgba(4,2,13,0.9));border:1px solid rgba(251,191,36,0.2)}
+.card-yellow:hover{box-shadow:0 12px 50px rgba(251,191,36,0.1);border-color:rgba(251,191,36,0.35)}
+.card-orange{background:linear-gradient(145deg,rgba(249,115,22,0.08),rgba(4,2,13,0.9));border:1px solid rgba(249,115,22,0.2)}
+.card-orange:hover{box-shadow:0 12px 50px rgba(249,115,22,0.1);border-color:rgba(249,115,22,0.35)}
+.card-pink{background:linear-gradient(145deg,rgba(244,114,182,0.08),rgba(4,2,13,0.9));border:1px solid rgba(244,114,182,0.2)}
+.card-pink:hover{box-shadow:0 12px 50px rgba(244,114,182,0.1);border-color:rgba(244,114,182,0.35)}
+
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+.card-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.icon-purple{background:rgba(124,58,237,0.2);box-shadow:0 0 20px rgba(124,58,237,0.2)}
+.icon-cyan{background:rgba(6,182,212,0.15);box-shadow:0 0 20px rgba(6,182,212,0.15)}
+.icon-green{background:rgba(16,185,129,0.15);box-shadow:0 0 20px rgba(16,185,129,0.15)}
+.icon-yellow{background:rgba(251,191,36,0.12);box-shadow:0 0 20px rgba(251,191,36,0.1)}
+.icon-orange{background:rgba(249,115,22,0.12);box-shadow:0 0 20px rgba(249,115,22,0.1)}
+.icon-pink{background:rgba(244,114,182,0.12);box-shadow:0 0 20px rgba(244,114,182,0.1)}
+
+.card-badges{display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+.status-badge{font-size:8px;letter-spacing:1.5px;font-weight:700;padding:3px 9px;border-radius:8px}
+.status-live{background:rgba(52,211,153,0.15);color:var(--g);border:1px solid rgba(52,211,153,0.25)}
+.status-beta{background:rgba(251,191,36,0.12);color:var(--y);border:1px solid rgba(251,191,36,0.22)}
+.status-soon{background:rgba(148,163,184,0.08);color:var(--t1);border:1px solid rgba(148,163,184,0.15)}
+.status-building{background:rgba(249,115,22,0.12);color:var(--o);border:1px solid rgba(249,115,22,0.22)}
+.cat-badge{font-size:8px;letter-spacing:1px;padding:2px 8px;border-radius:6px;background:var(--b1);border:1px solid var(--b2);color:var(--t2)}
+
+.card-name{font-size:18px;font-weight:800;color:var(--w);margin-bottom:5px}
+.card-desc{font-size:13px;color:var(--t1);line-height:1.65;margin-bottom:14px}
+.card-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tag{font-size:10px;padding:3px 10px;border-radius:8px;background:var(--b1);border:1px solid var(--b2);color:var(--t2)}
+.card-footer{display:flex;align-items:center;justify-content:space-between}
+.card-link{font-size:11px;font-weight:700;letter-spacing:1px;display:flex;align-items:center;gap:5px;transition:gap .2s}
+.card-link:hover{gap:8px}
+.card-link.purple{color:var(--pl)}
+.card-link.cyan{color:var(--c)}
+.card-link.green{color:var(--g)}
+.card-link.yellow{color:var(--y)}
+.card-link.orange{color:var(--o)}
+.card-link.pink{color:var(--pk)}
+.card-metric{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t2)}
+
+/* ALL PROJECTS LIST */
+.proj-list{display:flex;flex-direction:column;gap:10px;margin-bottom:40px;animation:fadeUp .8s ease .25s both}
+.list-item{background:var(--b1);border:1px solid var(--b2);border-radius:14px;padding:16px 20px;display:flex;align-items:center;gap:16px;transition:all .2s;cursor:pointer}
+.list-item:hover{border-color:var(--b3);transform:translateX(4px);background:rgba(255,255,255,0.025)}
+.list-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.list-info{flex:1;min-width:0}
+.list-name{font-size:14px;font-weight:700;color:var(--w);margin-bottom:2px}
+.list-desc{font-size:12px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.list-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.list-cat{font-size:9px;letter-spacing:1px;padding:3px 9px;border-radius:7px;background:var(--b2);color:var(--t2);border:1px solid var(--b2)}
+
+/* INVESTORS */
+.investors{background:var(--b1);border:1px solid var(--b2);border-radius:20px;padding:28px;margin-bottom:32px;animation:fadeUp .8s ease .3s both}
+.inv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}
+.inv-card{background:var(--b1);border:1px solid var(--b2);border-radius:14px;padding:16px;text-align:center;transition:all .2s}
+.inv-card:hover{border-color:var(--b3);transform:translateY(-2px)}
+.inv-icon{font-size:28px;margin-bottom:8px}
+.inv-name{font-size:13px;font-weight:700;color:var(--w);margin-bottom:3px}
+.inv-type{font-size:10px;color:var(--t2);letter-spacing:1px}
+.inv-amount{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g);margin-top:5px}
+
+/* TIMELINE */
+.timeline{margin-bottom:32px;animation:fadeUp .8s ease .35s both}
+.tl-items{position:relative;padding-left:24px;margin-top:20px}
+.tl-items::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(180deg,var(--pl),var(--c),var(--g),transparent)}
+.tl-item{position:relative;margin-bottom:20px;padding-left:20px}
+.tl-item::before{content:'';position:absolute;left:-5px;top:6px;width:10px;height:10px;border-radius:50%;border:2px solid}
+.tl-item.done::before{background:var(--g);border-color:var(--g);box-shadow:0 0 10px var(--g)}
+.tl-item.active::before{background:var(--y);border-color:var(--y);box-shadow:0 0 10px var(--y);animation:ldp 2s infinite}
+.tl-item.upcoming::before{background:transparent;border-color:var(--t3)}
+.tl-date{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t2);letter-spacing:2px;margin-bottom:3px}
+.tl-title{font-size:14px;font-weight:700;color:var(--w);margin-bottom:3px}
+.tl-desc{font-size:12px;color:var(--t1)}
+
+/* CREDIT */
+.credit{text-align:center;padding:30px 0;font-size:11px;color:var(--t2);letter-spacing:2px}
+.credit span{color:var(--pl)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:900px){.featured-grid{grid-template-columns:repeat(2,1fr)}.inv-grid{grid-template-columns:repeat(2,1fr)}.mega-stats{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:580px){.featured-grid{grid-template-columns:1fr}.mega-stats{grid-template-columns:repeat(2,1fr)}.inv-grid{grid-template-columns:repeat(2,1fr)}.filter-bar{flex-direction:column;align-items:flex-start}.search-box{width:100%}.search-box input{width:100%}}
+</style>
+</head>
+<body>
+
+<div class="loader" id="loader">
+  <div class="loader-hex">⬡</div>
+  <div class="loader-t">LOADING ECOSYSTEM DATA</div>
+  <div class="loader-bar"><div class="loader-fill" style="width:0"></div></div>
+</div>
+
+<div class="bg-fx"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
+<div class="grid-bg"></div>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge"><div class="live-dot"></div>LIVE DATA // NOVA TESTNET</div>
+    <h1>OpenGradient<br><em>Ecosystem Tracker</em></h1>
+    <p>Explore every project, tool, and partner building on the OpenGradient network — the home of verifiable AI.</p>
+  </div>
+
+  <!-- MEGA STATS -->
+  <div class="mega-stats">
+    <div class="mstat"><div class="mstat-num" id="ms1">12</div><div class="mstat-lbl">TOTAL PROJECTS</div></div>
+    <div class="mstat"><div class="mstat-num" id="ms2">5</div><div class="mstat-lbl">LIVE NOW</div></div>
+    <div class="mstat"><div class="mstat-num">$8.5M</div><div class="mstat-lbl">RAISED</div></div>
+    <div class="mstat"><div class="mstat-num">2026</div><div class="mstat-lbl">TGE TARGET</div></div>
+    <div class="mstat"><div class="mstat-num" id="ms5">7</div><div class="mstat-lbl">INVESTORS</div></div>
+  </div>
+
+  <!-- FILTER -->
+  <div class="filter-bar">
+    <span class="filter-label">FILTER:</span>
+    <button class="fbtn active" onclick="filter('all',this)">All</button>
+    <button class="fbtn" onclick="filter('core',this)">Core</button>
+    <button class="fbtn" onclick="filter('defi',this)">DeFi</button>
+    <button class="fbtn" onclick="filter('infra',this)">Infrastructure</button>
+    <button class="fbtn" onclick="filter('community',this)">Community</button>
+    <button class="fbtn" onclick="filter('coming',this)">Coming Soon</button>
+    <div class="search-box">
+      <span style="font-size:12px;color:var(--t3)">🔍</span>
+      <input type="text" placeholder="Search projects..." id="searchInput" oninput="searchProjects()">
+    </div>
+  </div>
+
+  <!-- FEATURED -->
+  <div class="sec-title">⬡ CORE ECOSYSTEM</div>
+  <div class="featured-grid" id="featuredGrid">
+
+    <div class="proj-card card-purple" data-cat="core">
+      <div class="card-top">
+        <div class="card-icon icon-purple">⬡</div>
+        <div class="card-badges">
+          <div class="status-badge status-live">● LIVE</div>
+          <div class="cat-badge">CORE</div>
+        </div>
+      </div>
+      <div class="card-name">Nova Testnet</div>
+      <div class="card-desc">OpenGradient's live blockchain network for verifiable AI inference. Every AI computation is executed inside a TEE and recorded on-chain with cryptographic proof.</div>
+      <div class="card-tags">
+        <span class="tag">L1 Blockchain</span>
+        <span class="tag">TEE</span>
+        <span class="tag">Verifiable AI</span>
+      </div>
+      <div class="card-footer">
+        <a href="https://opengradient.ai" target="_blank" class="card-link purple">Explore → </a>
+        <span class="card-metric">Block #14,205</span>
+      </div>
+    </div>
+
+    <div class="proj-card card-cyan" data-cat="core">
+      <div class="card-top">
+        <div class="card-icon icon-cyan">🧠</div>
+        <div class="card-badges">
+          <div class="status-badge status-live">● LIVE</div>
+          <div class="cat-badge">MEMORY</div>
+        </div>
+      </div>
+      <div class="card-name">MemSync</div>
+      <div class="card-desc">Portable, on-chain AI memory that follows you across every app. Your AI preferences and context are stored on-chain — you own your memory, not the app.</div>
+      <div class="card-tags">
+        <span class="tag">On-Chain Memory</span>
+        <span class="tag">User-Owned</span>
+        <span class="tag">Cross-App</span>
+      </div>
+      <div class="card-footer">
+        <a href="https://opengradient.ai" target="_blank" class="card-link cyan">Explore → </a>
+        <span class="card-metric">Memory Layer</span>
+      </div>
+    </div>
+
+    <div class="proj-card card-green" data-cat="defi">
+      <div class="card-top">
+        <div class="card-icon icon-green">📈</div>
+        <div class="card-badges">
+          <div class="status-badge status-live">● LIVE</div>
+          <div class="cat-badge">DEFI</div>
+        </div>
+      </div>
+      <div class="card-name">BitQuant</div>
+      <div class="card-desc">AI-powered DeFi trading agent with verifiable signals. Every trading recommendation is backed by on-chain proof — no black box, just math.</div>
+      <div class="card-tags">
+        <span class="tag">DeFi AI</span>
+        <span class="tag">Trading Signals</span>
+        <span class="tag">Verifiable</span>
+      </div>
+      <div class="card-footer">
+        <a href="https://opengradient.ai" target="_blank" class="card-link green">Explore → </a>
+        <span class="card-metric">TEE Verified</span>
+      </div>
+    </div>
+
+    <div class="proj-card card-yellow" data-cat="infra">
+      <div class="card-top">
+        <div class="card-icon icon-yellow">🔒</div>
+        <div class="card-badges">
+          <div class="status-badge status-live">● LIVE</div>
+          <div class="cat-badge">INFRA</div>
+        </div>
+      </div>
+      <div class="card-name">TEE Inference</div>
+      <div class="card-desc">Hardware-secured AI inference using Intel TDX and NVIDIA H100 confidential GPUs. Every model run is attested and recorded — the backbone of verifiable AI.</div>
+      <div class="card-tags">
+        <span class="tag">Intel TDX</span>
+        <span class="tag">NVIDIA H100</span>
+        <span class="tag">Attestation</span>
+      </div>
+      <div class="card-footer">
+        <a href="https://docs.opengradient.ai" target="_blank" class="card-link yellow">Docs → </a>
+        <span class="card-metric">Hardware Layer</span>
+      </div>
+    </div>
+
+    <div class="proj-card card-orange" data-cat="core">
+      <div class="card-top">
+        <div class="card-icon icon-orange">🐍</div>
+        <div class="card-badges">
+          <div class="status-badge status-live">● LIVE</div>
+          <div class="cat-badge">SDK</div>
+        </div>
+      </div>
+      <div class="card-name">Python SDK</div>
+      <div class="card-desc">Build verifiable AI apps in minutes. pip install opengradient — get tx_hash + response for every inference. Multi-model support: GPT-4o, Llama 3, Mistral.</div>
+      <div class="card-tags">
+        <span class="tag">Python</span>
+        <span class="tag">Multi-Model</span>
+        <span class="tag">Open Source</span>
+      </div>
+      <div class="card-footer">
+        <a href="https://docs.opengradient.ai" target="_blank" class="card-link orange">Install → </a>
+        <span class="card-metric">pip install</span>
+      </div>
+    </div>
+
+    <div class="proj-card card-pink" data-cat="coming">
+      <div class="card-top">
+        <div class="card-icon icon-pink">🪙</div>
+        <div class="card-badges">
+          <div class="status-badge status-soon">◎ 2026</div>
+          <div class="cat-badge">TOKEN</div>
+        </div>
+      </div>
+      <div class="card-name">$OPEN Token</div>
+      <div class="card-desc">The native token of OpenGradient. Powers inference fees, staking, and governance. TGE expected 2026. Early builders and OG Discord members positioned for allocation.</div>
+      <div class="card-tags">
+        <span class="tag">Utility Token</span>
+        <span class="tag">Governance</span>
+        <span class="tag">Staking</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-link pink">TGE 2026 →</span>
+        <span class="card-metric">Not Listed Yet</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ALL PROJECTS -->
+  <div class="sec-title">📋 ALL PROJECTS</div>
+  <div class="proj-list" id="projList">
+
+    <div class="list-item" data-cat="community">
+      <div class="list-icon icon-purple" style="background:rgba(124,58,237,0.15)">💬</div>
+      <div class="list-info">
+        <div class="list-name">OG Chat</div>
+        <div class="list-desc">Verifiable AI chat interface — every response generates on-chain TX hash as cryptographic proof</div>
+      </div>
+      <div class="list-right">
+        <div class="list-cat">COMMUNITY BUILD</div>
+        <div class="status-badge status-live">● LIVE</div>
+      </div>
+    </div>
+
+    <div class="list-item" data-cat="community">
+      <div class="list-icon" style="background:rgba(6,182,212,0.15)">⚖️</div>
+      <div class="list-info">
+        <div class="list-name">Model Comparator</div>
+        <div class="list-desc">Compare GPT-4o, Llama 3, and Mistral side by side with on-chain verification</div>
+      </div>
+      <div class="list-right">
+        <div class="list-cat">COMMUNITY BUILD</div>
+        <div class="status-badge status-live">● LIVE</div>
+      </div>
+    </div>
+
+    <div class="list-item" data-cat="infra">
+      <div class="list-icon" style="background:rgba(16,185,129,0.15)">🌐</div>
+      <div class="list-info">
+        <div class="list-name">Nova Testnet Explorer</div>
+        <div class="list-desc">Block explorer for OpenGradient Nova Testnet — view transactions, proofs, and inference records</div>
+      </div>
+      <div class="list-right">
+        <div class="list-cat">INFRA</div>
+        <div class="status-badge status-live">● LIVE</div>
+      </div>
+    </div>
+
+    <div class="list-item" data-cat="defi">
+      <div class="list-icon" style="background:rgba(251,191,36,0.12)">🤖</div>
+      <div class="list-info">
+        <div class="list-name">AI Agents Framework</div>
+        <div class="list-desc">Build autonomous AI agents with verifiable actions — every decision provable on-chain</div>
+      </div>
+      <div class="list-right">
+        <div class="list-cat">INFRA</div>
+        <div class="status-badge status-beta">◑ BETA</div>
+      </div>
+    </div>
+
+    <div class="list-item" data-cat="coming">
+      <div class="list-icon" style="background:rgba(244,114,182,0.12)">🗳️</div>
+      <div class="list-info">
+        <div class="list-name">On-Chain Governance</div>
+        <div class="list-desc">$OPEN token holders vote on protocol upgrades — fully decentralized decision making</div>
+      </div>
+      <div class="list-right">
+        <div class="list-cat">GOVERNANCE</div>
+        <div class="status-badge status-soon">◎ SOON</div>
+      </div>
+    </div>
+
+    <div class="list-item" data-cat="coming">
+      <div class="list-icon" style="background:rgba(249,115,22,0.12)">🔗</div>
+      <div class="list-info">
+        <div class="list-name">Cross-Chain Bridge</div>
+        <div class="list-desc">Bridge $OPEN and AI assets across Ethereum, Solana, and other chains</div>
+      </div>
+      <div class="list-right">
+        <div class="list-cat">BRIDGE</div>
+        <div class="status-badge status-building">⟳ BUILDING</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- INVESTORS -->
+  <div class="investors">
+    <div class="sec-title" style="margin-bottom:0">💰 BACKED BY THE BEST</div>
+    <div class="inv-grid">
+      <div class="inv-card">
+        <div class="inv-icon">🏛️</div>
+        <div class="inv-name">a16z CSX</div>
+        <div class="inv-type">VENTURE CAPITAL</div>
+        <div class="inv-amount">Lead Investor</div>
+      </div>
+      <div class="inv-card">
+        <div class="inv-icon">🔵</div>
+        <div class="inv-name">Coinbase Ventures</div>
+        <div class="inv-type">STRATEGIC</div>
+        <div class="inv-amount">$8.5M Seed</div>
+      </div>
+      <div class="inv-card">
+        <div class="inv-icon">⚡</div>
+        <div class="inv-name">Balaji Srinivasan</div>
+        <div class="inv-type">ANGEL</div>
+        <div class="inv-amount">Ex-CTO Coinbase</div>
+      </div>
+      <div class="inv-card">
+        <div class="inv-icon">🧬</div>
+        <div class="inv-name">Illia Polosukhin</div>
+        <div class="inv-type">ADVISOR</div>
+        <div class="inv-amount">Transformer Co-Author</div>
+      </div>
+      <div class="inv-card">
+        <div class="inv-icon">🎯</div>
+        <div class="inv-name">Foresight Ventures</div>
+        <div class="inv-type">VENTURE CAPITAL</div>
+        <div class="inv-amount">Seed Round</div>
+      </div>
+      <div class="inv-card">
+        <div class="inv-icon">🌟</div>
+        <div class="inv-name">Sandeep Nailwal</div>
+        <div class="inv-type">ANGEL</div>
+        <div class="inv-amount">Polygon Co-Founder</div>
+      </div>
+      <div class="inv-card">
+        <div class="inv-icon">🔮</div>
+        <div class="inv-name">Paul Taylor</div>
+        <div class="inv-type">ANGEL</div>
+        <div class="inv-amount">Seed Round</div>
+      </div>
+      <div class="inv-card" style="border-style:dashed;opacity:0.5">
+        <div class="inv-icon">➕</div>
+        <div class="inv-name">+8 More</div>
+        <div class="inv-type">INVESTORS</div>
+        <div class="inv-amount">Undisclosed</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROADMAP -->
+  <div class="timeline">
+    <div class="sec-title">🗺️ ROADMAP</div>
+    <div class="tl-items">
+      <div class="tl-item done">
+        <div class="tl-date">OCT 2024</div>
+        <div class="tl-title">Seed Funding — $8.5M</div>
+        <div class="tl-desc">Led by a16z CSX, Coinbase Ventures, and Balaji Srinivasan</div>
+      </div>
+      <div class="tl-item done">
+        <div class="tl-date">Q4 2024</div>
+        <div class="tl-title">Nova Testnet Launch</div>
+        <div class="tl-desc">Live verifiable AI inference on testnet with TEE infrastructure</div>
+      </div>
+      <div class="tl-item done">
+        <div class="tl-date">Q1 2025</div>
+        <div class="tl-title">Python SDK + MemSync</div>
+        <div class="tl-desc">Developer SDK released, portable on-chain memory live</div>
+      </div>
+      <div class="tl-item done">
+        <div class="tl-date">Q2 2025</div>
+        <div class="tl-title">BitQuant + Community Growth</div>
+        <div class="tl-desc">DeFi AI agent live, Discord OG program launched</div>
+      </div>
+      <div class="tl-item active">
+        <div class="tl-date">NOW — Q1 2026</div>
+        <div class="tl-title">⚡ Community Builds & Ecosystem Growth</div>
+        <div class="tl-desc">Developers building on SDK, community contributions active, testnet expanding</div>
+      </div>
+      <div class="tl-item upcoming">
+        <div class="tl-date">Q2-Q3 2026</div>
+        <div class="tl-title">Mainnet + $OPEN TGE</div>
+        <div class="tl-desc">Full mainnet launch, $OPEN token generation event, airdrop for early contributors</div>
+      </div>
+      <div class="tl-item upcoming">
+        <div class="tl-date">2026+</div>
+        <div class="tl-title">Full Ecosystem Expansion</div>
+        <div class="tl-desc">Cross-chain bridges, governance, third-party integrations, and more</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="credit">Built by <span>@Saifulbro7</span> for the OpenGradient community · Nova Testnet · 2026</div>
+</div>
+
+<script>
+// Loader
+setTimeout(() => {
+  const l = document.getElementById('loader');
+  l.style.opacity = '0';
+  setTimeout(() => l.remove(), 600);
+}, 2200);
+
+// Block counter animation
+let block = 14205;
+setInterval(() => {
+  block++;
+  const el = document.querySelector('.card-metric');
+  if (el && el.textContent.includes('Block')) el.textContent = 'Block #' + block.toLocaleString();
+}, 4000);
+
+// Filter
+function filter(cat, btn) {
+  document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const cards = document.querySelectorAll('#featuredGrid .proj-card');
+  const items = document.querySelectorAll('#projList .list-item');
+
+  cards.forEach(c => {
+    const show = cat === 'all' || c.dataset.cat === cat;
+    c.style.display = show ? '' : 'none';
+  });
+  items.forEach(i => {
+    const show = cat === 'all' || i.dataset.cat === cat;
+    i.style.display = show ? '' : 'none';
+  });
+
+  // Update count
+  const visible = [...cards].filter(c => c.style.display !== 'none').length +
+                  [...items].filter(i => i.style.display !== 'none').length;
+  document.getElementById('ms1').textContent = visible;
+}
+
+// Search
+function searchProjects() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const all = document.querySelectorAll('.proj-card, .list-item');
+  all.forEach(el => {
+    const text = el.textContent.toLowerCase();
+    el.style.display = text.includes(q) ? '' : 'none';
+  });
+}
+
+// Animate numbers
+function animateNum(id, target, suffix = '') {
+  const el = document.getElementById(id);
+  if (!el) return;
+  let n = 0;
+  const step = target / 40;
+  const iv = setInterval(() => {
+    n = Math.min(n + step, target);
+    el.textContent = Math.floor(n) + suffix;
+    if (n >= target) clearInterval(iv);
+  }, 30);
+}
+
+setTimeout(() => {
+  animateNum('ms1', 12);
+  animateNum('ms2', 5);
+  animateNum('ms5', 7);
+}, 2300);
+</script>
+</body>
+</html>
