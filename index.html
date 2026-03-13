@@ -85,9 +85,9 @@ body{background:var(--bg);font-family:'Cabinet Grotesk',sans-serif;color:var(--t
 /* FEATURED PROJECTS */
 .featured-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:40px;animation:fadeUp .8s ease .2s both}
 
-.proj-card{border-radius:20px;padding:22px;position:relative;overflow:hidden;transition:all .3s;cursor:pointer}
+.proj-card{border-radius:20px;padding:22px;position:relative;overflow:visible;transition:all .3s;cursor:pointer}
 .proj-card:hover{transform:translateY(-5px)}
-.proj-card::before{content:'';position:absolute;inset:0;border-radius:20px;opacity:0;transition:opacity .3s;background:rgba(255,255,255,0.02)}
+.proj-card::before{content:'';position:absolute;inset:0;border-radius:20px;opacity:0;transition:opacity .3s;background:rgba(255,255,255,0.02);pointer-events:none}
 .proj-card:hover::before{opacity:1}
 
 /* Card themes */
@@ -125,8 +125,8 @@ body{background:var(--bg);font-family:'Cabinet Grotesk',sans-serif;color:var(--t
 .card-desc{font-size:13px;color:var(--t1);line-height:1.65;margin-bottom:14px}
 .card-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
 .tag{font-size:10px;padding:3px 10px;border-radius:8px;background:var(--b1);border:1px solid var(--b2);color:var(--t2)}
-.card-footer{display:flex;align-items:center;justify-content:space-between}
-.card-link{font-size:11px;font-weight:700;letter-spacing:1px;display:flex;align-items:center;gap:5px;transition:gap .2s}
+.card-footer{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:10}
+.card-link{font-size:11px;font-weight:700;letter-spacing:1px;display:inline-flex;align-items:center;gap:5px;transition:gap .2s;text-decoration:none;position:relative;z-index:10;pointer-events:all}
 .card-link:hover{gap:8px}
 .card-link.purple{color:var(--pl)}
 .card-link.cyan{color:var(--c)}
@@ -244,7 +244,7 @@ body{background:var(--bg);font-family:'Cabinet Grotesk',sans-serif;color:var(--t
         <span class="tag">Verifiable AI</span>
       </div>
       <div class="card-footer">
-        <a href="https://nova.opengradient.ai" target="_blank" class="card-link purple">Explore → </a>
+        <a href="https://opengradient.ai" target="_blank" class="card-link purple">Explore → </a>
         <span class="card-metric">Block #14,205</span>
       </div>
     </div>
@@ -328,7 +328,7 @@ body{background:var(--bg);font-family:'Cabinet Grotesk',sans-serif;color:var(--t
         <span class="tag">Open Source</span>
       </div>
       <div class="card-footer">
-        <a href="https://pypi.org/project/opengradient/" target="_blank" class="card-link orange">Install → </a>
+        <a href="https://docs.opengradient.ai" target="_blank" class="card-link orange">Install → </a>
         <span class="card-metric">pip install</span>
       </div>
     </div>
@@ -341,7 +341,7 @@ body{background:var(--bg);font-family:'Cabinet Grotesk',sans-serif;color:var(--t
           <div class="cat-badge">TOKEN</div>
         </div>
       </div>
-      <div class="card-name">$OPEN Token</div>
+      <div class="card-name">$OPG Token</div>
       <div class="card-desc">The native token of OpenGradient. Powers inference fees, staking, and governance. TGE expected 2026. Early builders and OG Discord members positioned for allocation.</div>
       <div class="card-tags">
         <span class="tag">Utility Token</span>
@@ -360,7 +360,7 @@ body{background:var(--bg);font-family:'Cabinet Grotesk',sans-serif;color:var(--t
   <div class="sec-title">📋 ALL PROJECTS</div>
   <div class="proj-list" id="projList">
 
-    <div class="list-item" data-cat="community" onclick="window.open('https://github.com/Saiful-15931/opengradient-chat','_blank')">
+    <div class="list-item" data-cat="community">
       <div class="list-icon icon-purple" style="background:rgba(124,58,237,0.15)">💬</div>
       <div class="list-info">
         <div class="list-name">OG Chat</div>
@@ -384,7 +384,7 @@ body{background:var(--bg);font-family:'Cabinet Grotesk',sans-serif;color:var(--t
       </div>
     </div>
 
-    <div class="list-item" data-cat="infra" onclick="window.open('https://nova.opengradient.ai','_blank')">
+    <div class="list-item" data-cat="infra">
       <div class="list-icon" style="background:rgba(16,185,129,0.15)">🌐</div>
       <div class="list-info">
         <div class="list-name">Nova Testnet Explorer</div>
@@ -412,7 +412,7 @@ body{background:var(--bg);font-family:'Cabinet Grotesk',sans-serif;color:var(--t
       <div class="list-icon" style="background:rgba(244,114,182,0.12)">🗳️</div>
       <div class="list-info">
         <div class="list-name">On-Chain Governance</div>
-        <div class="list-desc">$OPEN token holders vote on protocol upgrades — fully decentralized decision making</div>
+        <div class="list-desc">$OPG token holders vote on protocol upgrades — fully decentralized decision making</div>
       </div>
       <div class="list-right">
         <div class="list-cat">GOVERNANCE</div>
@@ -424,7 +424,7 @@ body{background:var(--bg);font-family:'Cabinet Grotesk',sans-serif;color:var(--t
       <div class="list-icon" style="background:rgba(249,115,22,0.12)">🔗</div>
       <div class="list-info">
         <div class="list-name">Cross-Chain Bridge</div>
-        <div class="list-desc">Bridge $OPEN and AI assets across Ethereum, Solana, and other chains</div>
+        <div class="list-desc">Bridge $OPG and AI assets across Ethereum, Solana, and other chains</div>
       </div>
       <div class="list-right">
         <div class="list-cat">BRIDGE</div>
@@ -520,8 +520,8 @@ body{background:var(--bg);font-family:'Cabinet Grotesk',sans-serif;color:var(--t
       </div>
       <div class="tl-item upcoming">
         <div class="tl-date">Q2-Q3 2026</div>
-        <div class="tl-title">Mainnet + $OPEN TGE</div>
-        <div class="tl-desc">Full mainnet launch, $OPEN token generation event, airdrop for early contributors</div>
+        <div class="tl-title">Mainnet + $OPG TGE</div>
+        <div class="tl-desc">Full mainnet launch, $OPG token generation event, airdrop for early contributors</div>
       </div>
       <div class="tl-item upcoming">
         <div class="tl-date">2026+</div>
